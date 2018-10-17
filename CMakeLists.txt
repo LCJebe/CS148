@@ -81,6 +81,8 @@ file(GLOB_RECURSE ASSIGNMENT_HEADERS "./assignment*/*.h")
 file(GLOB_RECURSE INSTRUCTOR_SOURCES "./instructor/*.cpp")
 file(GLOB_RECURSE INSTRUCTOR_HEADERS "./instructor/*.h")
 
+file(GLOB_RECURSE SHADER_SOURCES "./shaders/*")
+
 # Path to Shaders
 add_definitions("-DSHADER_PATH=${CMAKE_CURRENT_SOURCE_DIR}/shaders")
 
@@ -93,7 +95,7 @@ add_definitions("-DASSET_PATH=${CMAKE_CURRENT_SOURCE_DIR}/assets")
 # want to run their code.
 add_definitions(${CXX_FLAGS})
 add_executable(cs148opengl4 main.cpp ${COMMON_SOURCES} ${COMMON_HEADERS}
-    ${ASSIGNMENT_SOURCES} ${ASSIGNMENT_HEADERS} ${INSTRUCTOR_SOURCES} ${INSTRUCTOR_HEADERS})
+    ${ASSIGNMENT_SOURCES} ${ASSIGNMENT_HEADERS} ${INSTRUCTOR_SOURCES} ${INSTRUCTOR_HEADERS} ${SHADER_SOURCES})
 
 # OpenGL
 target_link_libraries(cs148opengl4 ${OPENGL_LIBRARIES})

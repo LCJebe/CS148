@@ -27,11 +27,18 @@ private:
 
     virtual void SetupCamera();
 
+    virtual void ColorStep(double step);
+
     std::shared_ptr<class SceneObject> sceneObject;
 
     std::shared_ptr<class Light> pointLight;
 
     std::vector<glm::vec4> vertexPositions;
+    std::vector<glm::vec3> vertexColors;
+
+    GLuint shaderProgramId, vertexArrayObjectId;
+
+    float time;
 };
 
 #endif

@@ -19,7 +19,7 @@ std::shared_ptr<class Camera> Assignment3::CreateCamera()
     // Specify any old aspect ratio for now, we'll update it later once the window gets made!
     // Read more about Field of View: http://rg3.name/201210281829.html!
     // Note that our field of view is the VERTICAL field of view (in degrees).
-    return std::make_shared<PerspectiveCamera>(75.f, 1280.f / 720.f);
+    return std::make_shared<PerspectiveCamera>(30.f, 1280.f / 720.f);
 }
 
 glm::vec2 Assignment3::GetWindowSize() const
@@ -34,7 +34,7 @@ void Assignment3::SetupScene()
 
 void Assignment3::SetupCamera()
 {
-    camera->Translate(glm::vec3(0.f, 0.f, 10.f));
+    camera->Translate(glm::vec3(0.f, 1.7f, 10.f));
 }
 
 void Assignment3::HandleInput(SDL_Keysym key, Uint32 state, Uint8 repeat, double timestamp, double deltaTime)
@@ -65,24 +65,54 @@ void Assignment3::HandleInput(SDL_Keysym key, Uint32 state, Uint8 repeat, double
         break;
     case SDLK_LEFT:
         sceneObject->Rotate(glm::vec3(SceneObject::GetWorldUp()), -0.1f);
+        break;        
+    case SDLK_i:
+        sceneObject2->Rotate(glm::vec3(SceneObject::GetWorldRight()), -0.1f);
         break;
-    case SDLK_w:
+    case SDLK_k:
+        sceneObject2->Rotate(glm::vec3(SceneObject::GetWorldRight()), 0.1f);
+        break;
+    case SDLK_l:
+        sceneObject2->Rotate(glm::vec3(SceneObject::GetWorldUp()), 0.1f);
+        break;
+    case SDLK_j:
+        sceneObject2->Rotate(glm::vec3(SceneObject::GetWorldUp()), -0.1f);
+        break;
+    case SDLK_r:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldForward() * -0.3f));
+        break;
+    case SDLK_f:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldRight() * 0.3f));
+        break;
+    case SDLK_y:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldForward() * 0.3f));
+        break;
+    case SDLK_h:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldRight() * -0.3f));
+        break;
+    case SDLK_g:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldUp() * -0.3f));
+        break;
+    case SDLK_t:
+        sceneObject->Translate(glm::vec3(SceneObject::GetWorldUp() * 0.3f));
+        break;
+    case SDLK_SPACE:
         camera->Translate(glm::vec3(SceneObject::GetWorldForward() * -0.3f));
         break;
     case SDLK_a:
         camera->Translate(glm::vec3(SceneObject::GetWorldRight() * 0.3f));
         break;
-    case SDLK_s:
+    case SDLK_RCTRL:
         camera->Translate(glm::vec3(SceneObject::GetWorldForward() * 0.3f));
         break;
     case SDLK_d:
         camera->Translate(glm::vec3(SceneObject::GetWorldRight() * -0.3f));
         break;
-    case SDLK_SPACE:
+    case SDLK_w:
         camera->Translate(glm::vec3(SceneObject::GetWorldUp() * -0.3f));
         break;
     case SDLK_LCTRL:
-    case SDLK_RCTRL:
+    case SDLK_s:
         camera->Translate(glm::vec3(SceneObject::GetWorldUp() * 0.3f));
         break;
     case SDLK_EQUALS:
@@ -90,6 +120,18 @@ void Assignment3::HandleInput(SDL_Keysym key, Uint32 state, Uint8 repeat, double
         break;
     case SDLK_MINUS:
         sceneObject->AddScale(-0.1f);
+        break;
+    case SDLK_PLUS:
+        sceneObject->AddScale(0.1f);
+        break;
+    case SDLK_UNDERSCORE:
+        sceneObject->AddScale(-0.1f);
+        break;
+    case SDLK_0:
+        std::cout << glm::to_string(sceneObject2->GetPosition()) << std::endl;
+        break;
+    case SDLK_9:
+        std::cout << glm::to_string(sceneObject->GetPosition()) << std::endl;
         break;
     default:
         Application::HandleInput(key, state, repeat, timestamp, deltaTime);
@@ -163,7 +205,8 @@ void Assignment3::SetupExample2()
     shader->SetDiffuse(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
     shader->SetAmbient(glm::vec4(0.5f));
 
-    std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "outlander/Model/Outlander_Model.obj");
+    //std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "outlander/Model/Outlander_Model.obj");
+    std::vector<std::shared_ptr<RenderingObject>> meshTemplate = MeshLoader::LoadMesh(shader, "assignment3/VaseRose/VaseRose.obj");
     if (meshTemplate.empty()) {
         std::cerr << "ERROR: Failed to load the model. Check your paths." << std::endl;
         return;
@@ -171,6 +214,22 @@ void Assignment3::SetupExample2()
 
     sceneObject = std::make_shared<SceneObject>(meshTemplate);
     scene->AddSceneObject(sceneObject);
+    sceneObject->MultScale(0.2f);
+    sceneObject->Rotate(glm::vec3(SceneObject::GetWorldRight()), 0.3f);
+    sceneObject->Rotate(glm::vec3(SceneObject::GetWorldUp()), 0.2f);
+    //sceneObject->SetPosition(glm::vec3(0.300000, -0.399997, -0.300000));
+
+//    meshTemplate = MeshLoader::LoadMesh(shader, "assignment3/Vase/vase2.obj");
+//    if (meshTemplate.empty()) {
+//        std::cerr << "ERROR: Failed to load the model. Check your paths." << std::endl;
+//        return;
+//    }
+
+//    sceneObject2 = std::make_shared<SceneObject>(meshTemplate);
+//    scene->AddSceneObject(sceneObject2);
+//    sceneObject2->MultScale(0.5f);
+//    sceneObject2->SetPosition(glm::vec3(0.000000, 0.000000, 0.000000));
+//    sceneObject2->Rotate(glm::vec3(SceneObject::GetWorldRight()), 1.0f);
 
     std::unique_ptr<LightProperties> lightProperties = make_unique<LightProperties>();
     lightProperties->diffuseColor = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
@@ -178,8 +237,11 @@ void Assignment3::SetupExample2()
     pointLight = std::make_shared<Light>(std::move(lightProperties));
     pointLight->SetPosition(glm::vec3(0.f, 0.f, 10.f));
     scene->AddLight(pointLight);
+
 }
+
 
 void Assignment3::Tick(double deltaTime)
 {
+
 }
